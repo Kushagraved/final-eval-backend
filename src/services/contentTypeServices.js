@@ -17,11 +17,15 @@ const addNewFieldService = async (contentTypeId, fieldValue) => {
       id: contentTypeId
     }
   });
+  const newField = {
+    [uuidv4()]: fieldValue
+  };
   contentType.fields = {
     ...contentType.fields,
-    [uuidv4()]: fieldValue
+    ...newField
 
   };
+
   await contentType.save();
 
   const collections = await Collection.findAll({
@@ -38,7 +42,7 @@ const addNewFieldService = async (contentTypeId, fieldValue) => {
     await collection.save();
   });
 
-  return contentType;
+  return newField;
 };
 const editFieldService = async (contentTypeId, fieldId, fieldValue) => {
   const contentType = await ContentType.findOne({
@@ -59,13 +63,16 @@ const editFieldService = async (contentTypeId, fieldId, fieldValue) => {
 
   });
   if (collection.collections.length === 0) {
+    const updatedField = {
+      [fieldId]: fieldValue
+    };
     contentType.fields = {
       ...contentType.fields,
-      [fieldId]: fieldValue
+      ...updatedField
     };
 
     await contentType.save();
-    return contentType;
+    return updatedField;
   }
 
   throw new Error('Cant edit field  if it has entries in collection ');
