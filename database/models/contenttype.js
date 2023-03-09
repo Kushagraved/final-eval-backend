@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Order extends Model {
+  class ContentType extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,23 +11,26 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      ContentType.hasMany(models.Collection, {
+        foreignKey: 'contentTypeId',
+        as: 'collections'
+      });
     }
   }
-  Order.init({
-    user_id:{
-      type: DataTypes.INTEGER,
-    },
+  ContentType.init({
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    order_details: {
-      type: DataTypes.TEXT
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
     },
-    total: {
-      type: DataTypes.INTEGER
+    fields: {
+      type: DataTypes.JSON,
+      allowNull: false
     },
     createdAt: {
       allowNull: false,
@@ -39,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'Order',
+    modelName: 'ContentType',
   });
-  return Order;
+  return ContentType;
 };

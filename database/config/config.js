@@ -1,8 +1,8 @@
-module.exports={
+module.exports = {
   'development': {
     'username': 'postgres',
     'password': 'postgres',
-    'database': 'e-commerce',
+    'database': 'cms',
     'host': '127.0.0.1',
     'dialect': 'postgres'
   },
@@ -23,7 +23,7 @@ module.exports={
   'docker': {
     'username': 'postgres',
     'password': 'postgres',
-    'database': 'e-commerce',
+    'database': 'cms',
     'host': 'postgres',
     'dialect': 'postgres'
   }

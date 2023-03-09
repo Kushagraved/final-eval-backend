@@ -2,9 +2,13 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, DataTypes) {
-    await queryInterface.createTable('Orders', {
-      user_id:{
+    await queryInterface.createTable('Collections', {
+      contentTypeId:{
         type: DataTypes.INTEGER,
+        references: {
+          model: 'ContentTypes',
+          key: 'id'
+        }
       },
       id: {
         allowNull: false,
@@ -12,11 +16,9 @@ module.exports = {
         primaryKey: true,
         type: DataTypes.INTEGER
       },
-      order_details: {
-        type: DataTypes.TEXT
-      },
-      total: {
-        type: DataTypes.INTEGER
+      entries:{
+        type: DataTypes.JSON,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
@@ -28,7 +30,7 @@ module.exports = {
       }
     });
   },
-  async down(queryInterface, DataTypes) {
-    await queryInterface.dropTable('Orders');
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('Collections');
   }
 };
