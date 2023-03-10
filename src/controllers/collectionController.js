@@ -1,9 +1,9 @@
-const { createNewEntryService, updateEntryService, deleteEntryService, getEntryService } = require('../services/collectionService');
-
+// const { createNewEntryService, updateEntryService, deleteEntryService, getEntryService } = require('../services/collectionService');
+const collectionService = require('../services/collectionService');
 const createNewEntry = async (req, res) => {
   try {
     const { contentTypeId, data } = req.body;
-    const newEntry = await createNewEntryService(contentTypeId, data);
+    const newEntry = await collectionService.createNewEntryService(contentTypeId, data);
     res.status(201).json({
       message: 'New entry created',
       data: newEntry
@@ -19,7 +19,7 @@ const createNewEntry = async (req, res) => {
 const updateEntry = async (req, res) => {
   try {
     const { contentTypeId, collectionId, data } = req.body;
-    const updatedEntry = await updateEntryService(contentTypeId, collectionId, data);
+    const updatedEntry = await collectionService.updateEntryService(contentTypeId, collectionId, data);
     res.status(201).json({
       message: 'Entry updated',
       data: updatedEntry
@@ -35,7 +35,7 @@ const updateEntry = async (req, res) => {
 const deleteEntry = async (req, res) => {
   try {
     const { contentTypeId, collectionId } = req.body;
-    const deletedEntry = await deleteEntryService(contentTypeId, collectionId);
+    const deletedEntry = await collectionService.deleteEntryService(contentTypeId, collectionId);
     res.status(201).json({
       message: 'Entry deleted',
       data: deletedEntry
@@ -50,10 +50,10 @@ const deleteEntry = async (req, res) => {
 
 const getEntry = async (req, res) => {
   try {
-    console.log(55,req.body);
+    console.log(55, req.body);
     const { collectionId } = req.body;
     console.log(collectionId);
-    const entry = await getEntryService(collectionId);
+    const entry = await collectionService.getEntryService(collectionId);
     res.status(201).json({
       message: 'Entry fetched',
       data: entry
