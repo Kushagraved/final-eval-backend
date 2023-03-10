@@ -5,10 +5,10 @@ const router = express.Router();
 
 //add middleware to protect routes
 
-router.post('/new-entry', createNewEntry);
-router.post('/update-entry', updateEntry);
-router.delete('/delete-entry', deleteEntry);
-router.post('/get-entry', getEntry);
+router.post('/new-entry', authMiddleware, createNewEntry);
+router.post('/update-entry', authMiddleware, updateEntry);
+router.delete('/delete-entry', authMiddleware, deleteEntry);
+router.post('/get-entry', authMiddleware, getEntry);
 
 
 module.exports = router;
