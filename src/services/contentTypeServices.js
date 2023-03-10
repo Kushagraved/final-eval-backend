@@ -62,6 +62,7 @@ const editFieldService = async (contentTypeId, fieldId, fieldValue) => {
     }]
 
   });
+  console.log(collection);
   if (collection.collections.length === 0) {
     const updatedField = {
       [fieldId]: fieldValue
@@ -70,30 +71,40 @@ const editFieldService = async (contentTypeId, fieldId, fieldValue) => {
     //   ...contentType.fields,
     //   ...updatedField
     // };
-    contentType.fields[fieldId] = fieldValue;
-    await ContentType.update({ fields: { ...contentType.fields, ...updatedField } }, {
+
+    const newUpdatedField = await ContentType.update({ fields: { ...contentType.fields, ...updatedField } }, {
       where: {
-        id: contentTypeId
-      }
+        id: contentTypeId,
+      },
+      returning: true,
 
     });
 
     // await contentType.save();
-    return updatedField;
+    return newUpdatedField[1];
   }
 
   throw new Error('Cant edit field  if it has entries in collection ');
 };
 
 const deleteFieldService = async (contentTypeId, fieldId) => {
+  console.log('deletefieldsevr');
   const contentType = await ContentType.findOne({
     where: {
       id: contentTypeId
     }
   });
-
+  console.log(contentType);
   const fieldValue = contentType.fields[fieldId];
-  delete contentType.fields[fieldId];
+
+  delete contentType.dataValues.fields[fieldId];
+  contentType.fields = { ...contentType.dataValues.fields };
+
+  await ContentType.update({ fields: contentType.fields }, {
+    where: {
+      id: contentTypeId
+    }
+  });
 
   // console.log('fieldValue', fieldValue);
   await contentType.save();
