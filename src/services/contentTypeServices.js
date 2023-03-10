@@ -66,12 +66,19 @@ const editFieldService = async (contentTypeId, fieldId, fieldValue) => {
     const updatedField = {
       [fieldId]: fieldValue
     };
-    contentType.fields = {
-      ...contentType.fields,
-      ...updatedField
-    };
+    // contentType.fields = {
+    //   ...contentType.fields,
+    //   ...updatedField
+    // };
+    contentType.fields[fieldId] = fieldValue;
+    await ContentType.update({ fields: { ...contentType.fields, ...updatedField } }, {
+      where: {
+        id: contentTypeId
+      }
 
-    await contentType.save();
+    });
+
+    // await contentType.save();
     return updatedField;
   }
 

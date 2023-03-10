@@ -1,4 +1,4 @@
-const { createNewEntryService, updateEntryService, deleteEntryService } = require('../services/collectionService');
+const { createNewEntryService, updateEntryService, deleteEntryService, getEntryService } = require('../services/collectionService');
 
 const createNewEntry = async (req, res) => {
   try {
@@ -48,10 +48,28 @@ const deleteEntry = async (req, res) => {
   }
 };
 
+const getEntry = async (req, res) => {
+  try {
+    console.log(55,req.body);
+    const { collectionId } = req.body;
+    console.log(collectionId);
+    const entry = await getEntryService(collectionId);
+    res.status(201).json({
+      message: 'Entry fetched',
+      data: entry
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: 'Internal server error'
+    });
+  }
+};
 
 
 module.exports = {
   createNewEntry,
   updateEntry,
-  deleteEntry
+  deleteEntry,
+  getEntry
 };

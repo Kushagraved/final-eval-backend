@@ -14,9 +14,10 @@ const updateEntryService = async (contentTypeId, collectionId, data) => {
       id: collectionId
     }
   });
-  collection.entries = { ...collection.entries, ...data };
-  await collection.save();
-  return collection;
+
+  const updatedEntry = await Collection.update({ entries: { ...collection.entries, ...data } }, { where: { id: collectionId }, returning: true, plain: true });
+  // await collection.save();
+  return updatedEntry[1];
 };
 
 const deleteEntryService = async (contentTypeId, collectionId) => {
@@ -29,11 +30,20 @@ const deleteEntryService = async (contentTypeId, collectionId) => {
   return collection;
 };
 
+const getEntryService = async (collectionId) => {
+  const collection = await Collection.findOne({
+    where: {
+      id: collectionId
+    }
+  });
+  return collection;
+};
 
 
 
 module.exports = {
   createNewEntryService,
   updateEntryService,
-  deleteEntryService
+  deleteEntryService,
+  getEntryService
 };
